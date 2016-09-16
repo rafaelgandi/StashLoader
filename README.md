@@ -15,3 +15,4 @@ StashLoader.load([
 
 ```
 
+<img src="https://raw.githubusercontent.com/rafaelgandi/StashLoader/master/stashloader.png">
