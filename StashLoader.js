@@ -6,15 +6,25 @@
 	Inspired by:
 		* https://addyosmani.com/basket.js/
 		* http://www.stevesouders.com/blog/2011/03/28/storager-case-study-bing-google/
-	
+	LM: 2017-04-18
  */
 var StashLoader = (function (window, undefined) {
-	
+	"use strict";
 	function StashLoader() {
 		this.hasLocalStorage = !! window.localStorage;
 		this.expireKey = 'stashloader_expire';
 		// Caches expire after 1 hour //
-		_expire.call(this); 
+		_expire.call(this); 	
+		// See: https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/
+		window.onerror = function (errorMsg, url) {
+			if (errorMsg.indexOf('Error: Mismatched anonymous define() module:') !== -1) {
+				try {
+					console.warn('This script "'+url+'" is using a define() method without require js. See: http://requirejs.org/docs/errors.html#mismatch');
+					console.warn('A quick fix for this is to load this script before require.js or rename require js define and require methods.');
+				} catch (e) {}
+			}		
+			return;
+		};
 	}
 	
 	function _request(_script, _callback) {
